@@ -143,6 +143,10 @@ input[type="text"], input[type="password"], input[type="email"], textarea{
 }
 
 .message--wrapper{
+  border: 1px solid #ddd; /* Add a border to each message */
+  margin-bottom: 10px; /* Add space between messages */
+  padding: 10px;
+  border-radius: 10px;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
@@ -188,7 +192,12 @@ input[type="text"], input[type="password"], input[type="email"], textarea{
   color:red;
 }
 
-
-
-
-
+.chat-button {
+  margin-left: auto; /* Push the button to the right */
+  background-color: #0b41b6; /* Green background color */
+  color: white; /* White text color */
+  border: none; /* Remove border */
+  padding: 10px 30px; /* Add padding */
+  cursor: pointer; /* Add a pointer cursor on hover */
+  border-radius: 5px; /* Optional: Add rounded corners */
+}
