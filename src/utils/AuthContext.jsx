@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, useContext } from "react";
-import { account } from "../appwriteConfig";
+import { COLLECTION_ID_NEW, DATABASE_ID, account, databases } from "../appwriteConfig";
 import { useNavigate } from "react-router";
 import { ID} from 'appwrite';
 
@@ -56,7 +56,17 @@ export const AuthProvider = ({children}) => {
             
             let response = await account.create(ID.unique(), credentials.email, credentials.password1, credentials.name);
             console.log('User registered!', response)
-
+            const payload = {
+                username: response.name, // Adjust this based on your data structure
+                user: response.$id, // Assuming response.$id contains the user ID
+                // Add other user-related data as needed
+              };
+              await databases.createDocument(
+                DATABASE_ID,
+                COLLECTION_ID_NEW,
+                ID.unique(),
+                payload,
+                                );
             await account.createEmailSession(credentials.email, credentials.password1)
             let accountDetails = await account.get();
             setUser(accountDetails)

@@ -1,7 +1,7 @@
 /* Global settings */
 
 :root{
-    --mainBgColor:rgba(20,20,31,11);
+    --mainBgColor:rgba(20,20,31);
     --secondaryBgColor:rgb(20, 20, 41);
     --borderColor1:rgb(36, 190, 190);
     --borderColor2:rgba(79,86,105,1);
@@ -198,6 +198,9 @@ input[type="text"], input[type="password"], input[type="email"], textarea{
   color: white; /* White text color */
   border: none; /* Remove border */
   padding: 10px 30px; /* Add padding */
-  cursor: pointer; /* Add a pointer cursor on hover */
   border-radius: 5px; /* Optional: Add rounded corners */
 }
+.chat-button:hover{
+  background-color: #426dc9;
+  cursor: pointer;
+  }
