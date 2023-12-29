@@ -1,27 +1,34 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import client, { databases, DATABASE_ID, COLLECTION_ID_NEW } from "../appwriteConfig";
+import client, {
+  databases,
+  DATABASE_ID,
+  COLLECTION_ID_USERS,
+} from "../appwriteConfig";
 import { ID, Query, Permission, Role } from "appwrite";
 import Header from "../components/Header";
 import { useAuth } from "../utils/AuthContext";
 
 const New = () => {
-  const [neww, setNeww] = useState([]);
+  const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredMessages, setFilteredMessages] = useState([]);
   const [userMessages, setUserMessages] = useState([]);
   const { user } = useAuth();
   const navigate = useNavigate();
-  let myId = 0;
   useEffect(() => {
     getNew();
 
     const unsubscribe = client.subscribe(
-      `databases.${DATABASE_ID}.collections.${COLLECTION_ID_NEW}.documents`,
+      `databases.${DATABASE_ID}.collections.${COLLECTION_ID_USERS}.documents`,
       (response) => {
-        if (response.events.includes("databases.*.collections.*.documents.*.create")) {
+        if (
+          response.events.includes(
+            "databases.*.collections.*.documents.*.create"
+          )
+        ) {
           console.log("A MESSAGE WAS CREATED");
-          setNeww((prevState) => [response.payload, ...prevState]);
+          setUsers((prevState) => [response.payload, ...prevState]);
         }
       }
     );
@@ -31,30 +38,36 @@ const New = () => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   filterMessages();
-  // }, [neww, searchTerm]);
+  useEffect(() => {
+    filterMessages();
+  }, [users, searchTerm]);
 
   const getNew = async () => {
-    const response = await databases.listDocuments(DATABASE_ID, COLLECTION_ID_NEW, 
-    [
-      Query.orderDesc("$createdAt"),
+    const response = await databases.listDocuments(
+      DATABASE_ID,
+      COLLECTION_ID_USERS,
+      [
+        Query.orderDesc("$createdAt"),
         // Query.notEqual('user',user.$id)
-  ]);
+      ]
+    );
     console.log(response.documents);
-    setNeww(response.documents);
+    // console.log(user.u)
+    setUsers(response.documents);
   };
 
-  // const filterMessages = () => {
-  //   const filtered = neww.filter((message) => {
-  //     return message.username.toLowerCase().includes(searchTerm.toLowerCase());
-  //   });
-  //   setFilteredMessages(filtered);
+  const filterMessages = () => {
+    const filtered = users.filter((message) => {
+      return message.username.toLowerCase().includes(searchTerm.toLowerCase());
+    });
+    setFilteredMessages(filtered);
 
-  //   // Filter messages where message.user === user.$id
-  //   const userSpecificMessages = neww.filter((message) => message.user === user.$id);
-  //   setUserMessages(userSpecificMessages);
-  // };
+    // Filter messages where message.user === user.$id
+    const userSpecificMessages = users.filter(
+      (message) => message.user === user.$id
+    );
+    setUserMessages(userSpecificMessages);
+  };
 
   const handleChatButtonClick = (messageId) => {
     navigate(`/chat/${messageId}`);
@@ -65,21 +78,21 @@ const New = () => {
       <Header />
       <div className="room--container">
         <div>
-          {/* {userMessages.map((message) => (
+          {userMessages.map((message) => (
             <div key={message.$id} className={"message--wrapper"}>
               <div className="message--header">
                 <p>
-                  {message.user ? <span> {message.username}</span> : "Anonymous user"}
-                  <small className="message-timestamp"> {new Date(message.$createdAt).toLocaleString()}</small>
-                  <p>{message.$id}</p>
+                  {message.user ? <span>Your Chat</span> : "Anonymous user"}
                 </p>
               </div>
-              <div className={"message--body" + (message.user === user.$id ? " message--body--owner" : "")}>
-                <span>{message.body}</span>
-              </div>
-              <button className='chat-button'onClick={() => handleChatButtonClick(message.$id)}>Chat</button>
+              <button
+                className="chat-button"
+                onClick={() => handleChatButtonClick(message.$id)}
+              >
+                See Your Chat
+              </button>
             </div>
-          ))} */}
+          ))}
           <input
             type="text"
             placeholder="Search by username"
@@ -90,10 +103,19 @@ const New = () => {
             <div key={message.$id} className={"message--wrapper"}>
               <div className="message--header">
                 <p>
-                  {message.user ? <span> {message.username}</span> : "Anonymous user"}
+                  {message.user ? (
+                    <span>{message.username}</span>
+                  ) : (
+                    "Anonymous user"
+                  )}
                 </p>
               </div>
-              <button className="chat-button" onClick={() => handleChatButtonClick(message.$id)}>Chat</button>
+              <button
+                className="chat-button"
+                onClick={() => handleChatButtonClick(message.$id)}
+              >
+                {message.username === user.name ? "See your chat" : "Chat"}
+              </button>
             </div>
           ))}
         </div>

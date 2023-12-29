@@ -3,7 +3,7 @@ import client, { databases, DATABASE_ID, COLLECTION_ID_MESSAGES } from '../appwr
 import { ID, Query, Permission, Role} from 'appwrite';
 import Header from '../components/Header';
 import { useAuth } from '../utils/AuthContext';
-import {Trash2} from 'react-feather'
+import {Trash2,} from 'react-feather'
 
 
 const Room = () => {
@@ -88,7 +88,7 @@ const Room = () => {
     <main className="container">
         <Header/>
         <div className="room--container">
-
+        <button className='btn-room'>Enter Personal Chat</button>
         <form id="message--form" onSubmit={handleSubmit}>
             <div>
                 <textarea 

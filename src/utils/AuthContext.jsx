@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, useContext } from "react";
-import { COLLECTION_ID_NEW, DATABASE_ID, account, databases } from "../appwriteConfig";
+import { COLLECTION_ID_USERS, DATABASE_ID, account, databases } from "../appwriteConfig";
 import { useNavigate } from "react-router";
 import { ID} from 'appwrite';
 
@@ -63,10 +63,10 @@ export const AuthProvider = ({children}) => {
               };
               await databases.createDocument(
                 DATABASE_ID,
-                COLLECTION_ID_NEW,
+                COLLECTION_ID_USERS,
                 ID.unique(),
                 payload,
-                                );
+                );
             await account.createEmailSession(credentials.email, credentials.password1)
             let accountDetails = await account.get();
             setUser(accountDetails)

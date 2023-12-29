@@ -7,7 +7,7 @@ import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import { AuthProvider } from './utils/AuthContext'
 import New from './pages/Personal'
-import Gpt from './pages/App'
+// import Gpt from './pages/Gpt'
 import Chatting from './pages/Chatting'
 function App() {
 
@@ -19,8 +19,7 @@ function App() {
         <AuthProvider>
           
           <Routes>
-              <Route path="/gpt" element={<Gpt/>}/>
-
+              {/* <Route path="/gpt" element={<Gpt/>}/> */}
               <Route path="/login" element={<LoginPage/>}/>
               <Route path="/register" element={<RegisterPage/>}/>
                 <Route element={<PrivateRoutes/>}>
